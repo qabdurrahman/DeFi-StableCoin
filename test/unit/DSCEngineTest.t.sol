@@ -26,8 +26,12 @@ contract DSCEngineTest is Test {
         (dsc, dsce, config) = deployer.run();
         (ethUsdPriceFeed, , weth, , ) = config.activeNetworkConfig();
         //changes made below
-        vm.prank(msg.sender); // Ensure msg.sender is the test contract address
-        dsc.transferOwnership(address(dsce)); // Transfer ownership to DSCEngine
+        address deployerAddress = address(deployer);
+        // Print the current owner for debugging
+        // Start prank as the actual owner
+        // vm.Prank(dsc.owner()); 
+        dsc.transferOwnership(address(dsce));
+        // vm.stopPrank();
     }
 
     /////////////////
@@ -46,7 +50,7 @@ contract DSCEngineTest is Test {
     ///////////////////////////////////
     ////depositCOllateral TESTS////////
     //////////////////////////////////
-                                            
+
     function testRevertsIfCollateralZero() public {
         vm.startPrank(USER);
         ERC20Mock(weth).approve(address(dsce), AMOUNT_COLLATERAL);
